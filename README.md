@@ -1,7 +1,8 @@
-SpreeSmartStreet
+SpreeSmartyStreet
 ================
 
-Introduction goes here.
+This extension is to integrate Smarty Street jquery API into spree 3.0 checkout step. Please noticed that there will be NO API calls in Ruby.
+
 
 Installation
 ------------
@@ -36,4 +37,4 @@ Simply add this require statement to your spec_helper:
 require 'spree_smarty_street/factories'
 ```
 
-Copyright (c) 2015 [name of extension creator], released under the New BSD License
+Copyright (c) 2015 Natural Wellbeing Distribution Inc., released under the New BSD License

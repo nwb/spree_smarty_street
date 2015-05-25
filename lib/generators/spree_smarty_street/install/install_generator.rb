@@ -1,4 +1,4 @@
-module SpreeSmartStreet
+module SpreeSmartyStreet
   module Generators
     class InstallGenerator < Rails::Generators::Base
 
