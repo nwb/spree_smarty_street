@@ -1,0 +1,158 @@
+<% content_for :head do -%>
+    <% api_url= Spree::SmartyStreetConfiguration.account['default']['api_url'] %>
+    <%= javascript_include_tag api_url %>
+<% end %>
+<% qualified_address_key= Spree::SmartyStreetConfiguration.account['default']['qualified_address_key'] %>
+<script type="text/javascript">
+    function set_display_value(address, field){
+        var field_name ;
+
+        var disp = $("#order_" + address + "_address_attributes_" + field + "_name");
+
+        if(field=='country'){
+            disp.val(countries_isos[$("#order_" + address + "_address_attributes_" + field + "_id :selected").text()]);
+            set_display_value(address, 'state');
+            disp.change();
+        }
+        else
+            disp.val(us_states_abbrs[$("#order_" + address + "_address_attributes_" + field + "_id :selected").text()]);
+    }
+
+    var us_states_abbrs={"DC":"District of Columbia", "UT":"Utah", "LA":"Louisiana", "VA":"Virginia", "ND":"North Dakota", "WY":"Wyoming", "NM":"New Mexico", "CT":"Connecticut", "WV":"West Virginia", "WI":"Wisconsin", "NC":"North Carolina", "NV":"Nevada", "HI":"Hawaii", "OK":"Oklahoma", "FL":"Florida", "CA":"California", "OR":"Oregon", "KY":"Kentucky", "MA":"Massachusetts", "AK":"Alaska", "WA":"Washington", "NH":"New Hampshire", "AR":"Arkansas", "PA":"Pennsylvania", "RI":"Rhode Island", "MD":"Maryland", "OH":"Ohio", "TX":"Texas", "MS":"Mississippi", "CO":"Colorado", "SC":"South Carolina", "SD":"South Dakota", "IL":"Illinois", "MO":"Missouri", "NE":"Nebraska", "DE":"Delaware", "TN":"Tennessee", "NJ":"New Jersey", "IN":"Indiana", "IA":"Iowa", "GA":"Georgia", "NY":"New York", "MI":"Michigan", "AZ":"Arizona", "KS":"Kansas", "ID":"Idaho", "VT":"Vermont", "MT":"Montana", "MN":"Minnesota", "ME":"Maine", "AL":"Alabama", "AE":"Armed Forces Europe", "PR":"Puerto Rico", "AS":"American Samoa", "FM":"Federated States of Micronesia","MH":"Marshall Islands", "MP":"Northern Mariana Islands","PW":"Palau", "VI":"Virgin Islands", "AE":"Armed Forces Africa", "AE":"Armed Forces Canada", "AE":"Armed Forces Middle East","AP":"Armed Forces Pacific", "AA":"Armed Forces Americas", "GU":"Guam"}
+    var countries_isos={"Afghanistan":"AF","Albania":"AL","Algeria":"DZ","American Samoa":"AS","Andorra":"AD","Angola":"AO","Anguilla":"AI","Antigua and Barbuda":"AG","Argentina":"AR","Armenia":"AM","Aruba":"AW","Australia":"AU","Austria":"AT","Azerbaijan":"AZ","Bahamas":"BS","Bahrain":"BH","Bangladesh":"BD","Barbados":"BB","Belarus":"BY","Belgium":"BE","Belize":"BZ","Benin":"BJ","Bermuda":"BM","Bhutan":"BT","Bolivia":"BO","Bosnia and Herzegovina":"BA","Botswana":"BW","Brazil":"BR","Brunei Darussalam":"BN","Bulgaria":"BG","Burkina Faso":"BF","Burundi":"BI","Cambodia":"KH","Cameroon":"CM","Canada":"CA","Cape Verde":"CV","Cayman Islands":"KY","Central African Republic":"CF","Chad":"TD","Chile":"CL","China":"CN","Colombia":"CO","Comoros":"KM","Congo":"CG","Congo, the Democratic Republic of the":"CD","Cook Islands":"CK","Costa Rica":"CR","Cote D'Ivoire":"CI","Croatia":"HR","Cuba":"CU","Cyprus":"CY","Czech Republic":"CZ","Denmark":"DK","Djibouti":"DJ","Dominica":"DM","Dominican Republic":"DO","Ecuador":"EC","Egypt":"EG","El Salvador":"SV","Equatorial Guinea":"GQ","Eritrea":"ER","Estonia":"EE","Ethiopia":"ET","Falkland Islands (Malvinas)":"FK","Faroe Islands":"FO","Fiji":"FJ","Finland":"FI","France":"FR","French Guiana":"GF","French Polynesia":"PF","Gabon":"GA","Gambia":"GM","Georgia":"GE","Germany":"DE","Ghana":"GH","Gibraltar":"GI","Greece":"GR","Greenland":"GL","Grenada":"GD","Guadeloupe":"GP","Guam":"GU","Guatemala":"GT","Guinea":"GN","Guinea-Bissau":"GW","Guyana":"GY","Haiti":"HT","Holy See (Vatican City State)":"VA","Honduras":"HN","Hong Kong":"HK","Hungary":"HU","Iceland":"IS","India":"IN","Indonesia":"ID","Iran, Islamic Republic of":"IR","Iraq":"IQ","Ireland":"IE","Israel":"IL","Italy":"IT","Jamaica":"JM","Japan":"JP","Jordan":"JO","Kazakhstan":"KZ","Kenya":"KE","Kiribati":"KI","North Korea":"KP","South Korea":"KR","Kuwait":"KW","Kyrgyzstan":"KG","Lao People's Democratic Republic":"LA","Latvia":"LV","Lebanon":"LB","Lesotho":"LS","Liberia":"LR","Libyan Arab Jamahiriya":"LY","Liechtenstein":"LI","Lithuania":"LT","Luxembourg":"LU","Macao":"MO","Macedonia":"MK","Madagascar":"MG","Malawi":"MW","Malaysia":"MY","Maldives":"MV","Mali":"ML","Malta":"MT","Marshall Islands":"MH","Martinique":"MQ","Mauritania":"MR","Mauritius":"MU","Mexico":"MX","Micronesia, Federated States of":"FM","Moldova, Republic of":"MD","Monaco":"MC","Mongolia":"MN","Montserrat":"MS","Morocco":"MA","Mozambique":"MZ","Myanmar":"MM","Namibia":"NA","Nauru":"NR","Nepal":"NP","Netherlands":"NL","Netherlands Antilles":"AN","New Caledonia":"NC","New Zealand":"NZ","Nicaragua":"NI","Niger":"NE","Nigeria":"NG","Niue":"NU","Norfolk Island":"NF","Northern Mariana Islands":"MP","Norway":"NO","Oman":"OM","Pakistan":"PK","Palau":"PW","Panama":"PA","Papua New Guinea":"PG","Paraguay":"PY","Peru":"PE","Philippines":"PH","Pitcairn":"PN","Poland":"PL","Portugal":"PT","Puerto Rico":"PR","Qatar":"QA","Reunion":"RE","Romania":"RO","Russian Federation":"RU","Rwanda":"RW","Saint Helena":"SH","Saint Kitts and Nevis":"KN","Saint Lucia":"LC","Saint Pierre and Miquelon":"PM","Saint Vincent and the Grenadines":"VC","Samoa":"WS","San Marino":"SM","Sao Tome and Principe":"ST","Saudi Arabia":"SA","Senegal":"SN","Seychelles":"SC","Sierra Leone":"SL","Singapore":"SG","Slovakia":"SK","Slovenia":"SI","Solomon Islands":"SB","Somalia":"SO","South Africa":"ZA","Spain":"ES","Sri Lanka":"LK","Sudan":"SD","Suriname":"SR","Svalbard and Jan Mayen":"SJ","Swaziland":"SZ","Sweden":"SE","Switzerland":"CH","Syrian Arab Republic":"SY","Taiwan":"TW","Tajikistan":"TJ","Tanzania, United Republic of":"TZ","Thailand":"TH","Togo":"TG","Tokelau":"TK","Tonga":"TO","Trinidad and Tobago":"TT","Tunisia":"TN","Turkey":"TR","Turkmenistan":"TM","Turks and Caicos Islands":"TC","Tuvalu":"TV","Uganda":"UG","Ukraine":"UA","United Arab Emirates":"AE","United Kingdom":"GB","United States":"US","Uruguay":"UY","Uzbekistan":"UZ","Vanuatu":"VU","Venezuela":"VE","Viet Nam":"VN","Virgin Islands, British":"VG","Virgin Islands, U.S.":"VI","Wallis and Futuna":"WF","Western Sahara":"EH","Yemen":"YE","Zambia":"ZM","Zimbabwe":"ZW"}
+
+    function set_actual_value(address, field){
+        var actual = $("#order_" + address + "_address_attributes_" + field + "_id :selected");
+        var value = $("#order_" + address + "_address_attributes_" + field + "_name").val();
+        if(value.length==2){ //only update if the value is a 2 digital state abbr
+            actual.val(value);
+            $("#order_" + address + "_address_attributes_" + field + "_id option")
+                    .each(function() { this.selected = (this.text == us_states_abbrs[value]); });
+        }
+    }
+
+
+    function turn_off_validation()
+    {
+        //liveaddress.deactivate(); //clear all old one
+        $("#order_ship_address_attributes_address").attr('style','');
+        $("#order_ship_address_attributes_city").attr('style','');
+        $("#order_ship_address_attributes_zipcode").attr('style','');
+
+        $("#order_bill_address_attributes_address").attr('style','');
+        $("#order_bill_address_attributes_city").attr('style','');
+        $("#order_bill_address_attributes_zipcode").attr('style','');
+    }
+
+    function turn_on_validation()
+    {
+        turn_off_validation();
+        liveaddress.mapFields();
+    }
+
+    //pop up the state based on zip code if it is there
+
+    if ((typeof($("#order_ship_address_attributes_zipcode").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_city").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_state_name").val()) != 'undefined'))
+    {
+        $.getJSON( "https://api.smartystreets.com/zipcode?zipcode=" + $("#order_ship_address_attributes_zipcode").val() + "&key=<%= qualified_address_key %>",
+                function( data ) {
+                    if (data.length>0)
+                    {
+                        var city_states=data[0].city_states;
+                        $("#order_ship_address_attributes_city").val(city_states[0].city);
+                        $("#order_ship_address_attributes_state_name").val(city_states[0].state_abbreviation);
+                        set_actual_value('ship', 'state');
+                        create_liveaddress ();
+                    }
+                    else
+                        create_liveaddress();
+
+                }
+        );
+
+    }
+    else
+        create_liveaddress();
+
+    // functions and objects for smarty street jquery plugin
+    var  liveaddress={}
+    function create_liveaddress(){
+        liveaddress=$.LiveAddress({
+            key: <%= qualified_address_key %>,
+            debug: false,
+            autoVerify: false,
+            addresses: [{
+                id: 'ship_address_object',
+                street: "#order_ship_address_attributes_address1",
+                city: "#order_ship_address_attributes_city",
+                state: "#order_ship_address_attributes_state_name",
+                zipcode: "#order_ship_address_attributes_zipcode",
+                country: "#order_ship_address_attributes_country_name"
+            },
+                {
+                    id: 'bill_address_object',
+                    street: "#order_bill_address_attributes_address1",
+                    city: "#order_bill_address_attributes_city",
+                    state: "#order_bill_address_attributes_state_name",
+                    zipcode: "#order_bill_address_attributes_zipcode",
+                    country: "#order_bill_address_attributes_country_name"
+                }]
+        });
+        liveaddress.on("AddressChanged",function(event,data, previousHandler){
+            //alert(data.address);
+
+            if($("select#order_bill_address_attributes_country_id").val()==214){
+                set_actual_value('bill', 'state');
+            }
+            if($("select#order_ship_address_attributes_country_id").val()==214){
+                set_actual_value('ship', 'state');
+            }
+            //return false;
+        });
+    }
+
+
+    jQuery(document).ready(function(){
+
+        set_display_value('bill', 'country');
+        set_display_value('ship', 'country');
+
+        $(".to_upper input").change(function(){
+            var that = $(this);
+            that.val( that.val().toUpperCase());
+        });
+
+        //setup handlers for changes
+        $("select#order_bill_address_attributes_country_id").change(function(){set_display_value('bill', 'country');});
+        $("select#order_ship_address_attributes_country_id").change(function(){set_display_value('ship', 'country');});
+        $("select#order_bill_address_attributes_state_id").change(function(){set_display_value('bill', 'state');});
+        $("select#order_ship_address_attributes_state_id").change(function(){set_display_value('ship', 'state');});
+
+        $('input#order_use_billing').click(function() {
+            if(this.checked){
+                $("input#order_bill_address_attributes_country_name").val("Use Billing");
+            }else{
+                set_display_value('bill', 'country');
+            }
+            if ($("select#order_ship_address_attributes_country_id")==214)
+                turn_on_validation();
+        });
+
+        function set_bill_state( init ){
+            var use_shipping = ( $(" input[name='order[use_billing]']:checked ").val() == 1);
+            if (use_shipping) {
+                $('.billing_address_set .inner input').attr('disabled', 'disabled');
+                $('.billing_address_set .inner select').attr('disabled', 'disabled');
+                $("input#order_bill_address_attributes_country_display").val("Use Billing");
+                $("input#order_bill_address_attributes_country_display").change();   //hi smarty, I am not the one you saw
+            }else{
+                set_display_value('bill', 'country');
+                $('.billing_address_set .inner input').removeAttr('disabled', 'disabled');
+                $('.billing_address_set .inner select').removeAttr('disabled', 'disabled');
+            };
+        }
+        set_bill_state(); //We create the function and immeditately call it.
+        $(" input[name='order[use_billing]'] ").click(set_bill_state);
+
+    });
+</script>

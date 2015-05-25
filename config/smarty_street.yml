@@ -1,0 +1,7 @@
+# Be sure to restart your server when you modify this file.
+
+# liveaddress jquery plugin from smartStreet.com
+
+default:
+   api_url: //d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/2.4/jquery.liveaddress.min.js
+   qualified_address_key: your_key_here
