@@ -31,49 +31,6 @@
         }
     }
 
-
-    function turn_off_validation()
-    {
-        //liveaddress.deactivate(); //clear all old one
-        $("#order_ship_address_attributes_address").attr('style','');
-        $("#order_ship_address_attributes_city").attr('style','');
-        $("#order_ship_address_attributes_zipcode").attr('style','');
-
-        $("#order_bill_address_attributes_address").attr('style','');
-        $("#order_bill_address_attributes_city").attr('style','');
-        $("#order_bill_address_attributes_zipcode").attr('style','');
-    }
-
-    function turn_on_validation()
-    {
-        turn_off_validation();
-        liveaddress.mapFields();
-    }
-
-    //pop up the state based on zip code if it is there
-
-    if ((typeof($("#order_ship_address_attributes_zipcode").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_city").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_state_name").val()) != 'undefined'))
-    {
-        $.getJSON( "https://api.smartystreets.com/zipcode?zipcode=" + $("#order_ship_address_attributes_zipcode").val() + "&key=<%= qualified_address_key %>",
-                function( data ) {
-                    if (data.length>0)
-                    {
-                        var city_states=data[0].city_states;
-                        $("#order_ship_address_attributes_city").val(city_states[0].city);
-                        $("#order_ship_address_attributes_state_name").val(city_states[0].state_abbreviation);
-                        set_actual_value('ship', 'state');
-                        create_liveaddress ();
-                    }
-                    else
-                        create_liveaddress();
-
-                }
-        );
-
-    }
-    else
-        create_liveaddress();
-
     // functions and objects for smarty street jquery plugin
     var  liveaddress={}
     function create_liveaddress(){
@@ -112,15 +69,54 @@
     }
 
 
+    function turn_off_validation()
+    {
+        //liveaddress.deactivate(); //clear all old one
+        $("#order_ship_address_attributes_address").attr('style','');
+        $("#order_ship_address_attributes_city").attr('style','');
+        $("#order_ship_address_attributes_zipcode").attr('style','');
+
+        $("#order_bill_address_attributes_address").attr('style','');
+        $("#order_bill_address_attributes_city").attr('style','');
+        $("#order_bill_address_attributes_zipcode").attr('style','');
+    }
+
+    function turn_on_validation()
+    {
+        turn_off_validation();
+        liveaddress.mapFields();
+    }
+
+    //pop up the state based on zip code if it is there
+
+    if ((typeof($("#order_ship_address_attributes_zipcode").val()) != 'undefined') && ($("#order_ship_address_attributes_zipcode").val().length>4) && (typeof($("#order_ship_address_attributes_city").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_state_name").val()) != 'undefined'))
+    {
+        $.getJSON( "https://api.smartystreets.com/zipcode?zipcode=" + $("#order_ship_address_attributes_zipcode").val() + "&key=<%= qualified_address_key %>",
+                function( data ) {
+                    if (data.length>0)
+                    {
+                        var city_states=data[0].city_states;
+                        $("#order_ship_address_attributes_city").val(city_states[0].city);
+                        $("#order_ship_address_attributes_state_name").val(city_states[0].state_abbreviation);
+                        set_actual_value('ship', 'state');
+                        create_liveaddress ();
+                    }
+                    else
+                        create_liveaddress();
+
+                }
+        );
+
+    }
+    else
+        create_liveaddress();
+
+
+
     jQuery(document).ready(function(){
 
-        set_display_value('bill', 'country');
-        set_display_value('ship', 'country');
-
-        $(".to_upper input").change(function(){
-            var that = $(this);
-            that.val( that.val().toUpperCase());
-        });
+        //set_display_value('bill', 'country');
+        //set_display_value('ship', 'country');
 
         //setup handlers for changes
         $("select#order_bill_address_attributes_country_id").change(function(){set_display_value('bill', 'country');});
@@ -128,7 +124,7 @@
         $("select#order_bill_address_attributes_state_id").change(function(){set_display_value('bill', 'state');});
         $("select#order_ship_address_attributes_state_id").change(function(){set_display_value('ship', 'state');});
 
-        $('input#order_use_billing').click(function() {
+        $('input#order_use_shipping').click(function() {
             if(this.checked){
                 $("input#order_bill_address_attributes_country_name").val("Use Billing");
             }else{
@@ -139,12 +135,12 @@
         });
 
         function set_bill_state( init ){
-            var use_shipping = ( $(" input[name='order[use_billing]']:checked ").val() == 1);
+            var use_shipping = ( $(" input[name='order[use_shipping]']:checked ").val() == 1);
             if (use_shipping) {
                 $('.billing_address_set .inner input').attr('disabled', 'disabled');
                 $('.billing_address_set .inner select').attr('disabled', 'disabled');
-                $("input#order_bill_address_attributes_country_display").val("Use Billing");
-                $("input#order_bill_address_attributes_country_display").change();   //hi smarty, I am not the one you saw
+                $("#order_bill_address_attributes_country_name").val("Use Billing");
+                $("#order_bill_address_attributes_country_name").change();   //hi smarty, I am not the one you saw
             }else{
                 set_display_value('bill', 'country');
                 $('.billing_address_set .inner input').removeAttr('disabled', 'disabled');
@@ -152,7 +148,26 @@
             };
         }
         set_bill_state(); //We create the function and immeditately call it.
-        $(" input[name='order[use_billing]'] ").click(set_bill_state);
+
+
+        $("#order_use_shipping").click(set_bill_state);
+
+        $( 'select.country').change(function (evt){
+           // update_state($(this));
+            try{
+                if ($(this).attr('id').indexOf('ship')>0)
+                    set_display_value('ship', 'country');
+                else
+                    set_display_value('bill', 'country');
+                if($("#order_ship_address_attributes_country_id").val()==214)
+                    turn_on_validation();
+                else
+                    turn_off_validation();
+                $("#"+$(this).attr('id').replace('country_id','country_name')).change()
+            }
+            catch(e){}
+        });
+
 
     });
 </script>
