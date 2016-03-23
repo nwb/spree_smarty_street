@@ -92,7 +92,7 @@
 
     if ((typeof($("#order_ship_address_attributes_zipcode").val()) != 'undefined') && ($("#order_ship_address_attributes_zipcode").val().length>4) && (typeof($("#order_ship_address_attributes_city").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_state_name").val()) != 'undefined'))
     {
-        $.getJSON( "https://api.smartystreets.com/zipcode?zipcode=" + $("#order_ship_address_attributes_zipcode").val() + "&key=<%= qualified_address_key %>",
+        $.getJSON( "https://us-zipcode.api.smartystreets.com/lookup?zipcode=" + $("#order_ship_address_attributes_zipcode").val() + "&key=<%= qualified_address_key %>",
                 function( data ) {
                     if (data.length>0)
                     {
