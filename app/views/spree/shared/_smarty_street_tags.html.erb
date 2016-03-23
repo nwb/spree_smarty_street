@@ -37,7 +37,7 @@
         liveaddress=$.LiveAddress({
             key: <%= qualified_address_key %>,
             debug: false,
-            autoVerify: false,
+            autoVerify: true,
             addresses: [{
                 id: 'ship_address_object',
                 street: "#order_ship_address_attributes_address1",
@@ -60,14 +60,15 @@
 
             if($("select#order_bill_address_attributes_country_id").val()==214){
                 set_actual_value('bill', 'state');
+                liveaddress.getMappedAddressByID('bill_address_object').verify();
             }
             if($("select#order_ship_address_attributes_country_id").val()==214){
                 set_actual_value('ship', 'state');
+                liveaddress.getMappedAddressByID('ship_address_object').verify();
             }
             //return false;
         });
     }
-
 
     function turn_off_validation()
     {
