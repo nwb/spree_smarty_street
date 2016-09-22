@@ -90,7 +90,7 @@
 
     //pop up the state based on zip code if it is there
 
-    if ((typeof($("#order_ship_address_attributes_zipcode").val()) != 'undefined') && ($("#order_ship_address_attributes_zipcode").val().length>4) && (typeof($("#order_ship_address_attributes_city").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_state_name").val()) != 'undefined'))
+    if (($("select#order_ship_address_attributes_country_id")=="214") && (typeof($("#order_ship_address_attributes_zipcode").val()) != 'undefined') && ($("#order_ship_address_attributes_zipcode").val().length>4) && (typeof($("#order_ship_address_attributes_city").val()) != 'undefined') && (typeof($("#order_ship_address_attributes_state_name").val()) != 'undefined'))
     {
         $.getJSON( "https://us-zipcode.api.smartystreets.com/lookup?zipcode=" + $("#order_ship_address_attributes_zipcode").val() + "&key=<%= qualified_address_key %>",
                 function( data ) {
