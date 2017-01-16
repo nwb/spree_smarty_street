@@ -60,11 +60,13 @@
 
             if($("select#order_bill_address_attributes_country_id").val()==214){
                 set_actual_value('bill', 'state');
-                liveaddress.getMappedAddressByID('bill_address_object').verify();
+                if(obj=liveaddress.getMappedAddressByID('bill_address_object'))
+                        obj.verify();
             }
             if($("select#order_ship_address_attributes_country_id").val()==214){
                 set_actual_value('ship', 'state');
-                liveaddress.getMappedAddressByID('ship_address_object').verify();
+                if(obj=liveaddress.getMappedAddressByID('ship_address_object'))
+                        obj.verify();
             }
             //return false;
         });
@@ -125,14 +127,14 @@
         $("select#order_ship_address_attributes_country_id").change(function(){set_display_value('ship', 'country');});
         $("select#order_bill_address_attributes_state_id").change(function(){set_display_value('bill', 'state');});
         $("select#order_ship_address_attributes_state_id").change(function(){set_display_value('ship', 'state');});
-        $('#order_ship_address_attributes_address1').change(function(){if($(this).val().length>30) turn_off_validation();});
+        //$('#order_ship_address_attributes_address1').change(function(){if($(this).val().length>30) turn_off_validation();});
         $('input#order_use_shipping').click(function() {
             if(this.checked){
                 $("input#order_bill_address_attributes_country_name").val("Use Billing");
             }else{
                 set_display_value('bill', 'country');
             }
-            if ($("select#order_ship_address_attributes_country_id")==214)
+            if ($("select#order_ship_address_attributes_country_id").val()==214)
                 turn_on_validation();
         });
 
