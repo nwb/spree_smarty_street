@@ -125,7 +125,7 @@
         $("select#order_ship_address_attributes_country_id").change(function(){set_display_value('ship', 'country');});
         $("select#order_bill_address_attributes_state_id").change(function(){set_display_value('bill', 'state');});
         $("select#order_ship_address_attributes_state_id").change(function(){set_display_value('ship', 'state');});
-        $('#order_ship_address_attributes_address1').change(function(){if($(this).val().length()>30) turn_off_validation();});
+        $('#order_ship_address_attributes_address1').change(function(){if($(this).val().length>30) turn_off_validation();});
         $('input#order_use_shipping').click(function() {
             if(this.checked){
                 $("input#order_bill_address_attributes_country_name").val("Use Billing");
