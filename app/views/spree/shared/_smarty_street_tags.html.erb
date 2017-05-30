@@ -55,21 +55,7 @@
                     country: "#order_bill_address_attributes_country_name"
                 }]
         });
-        liveaddress.on("AddressChanged",function(event,data, previousHandler){
-            //alert(data.address);
 
-            if($("select#order_bill_address_attributes_country_id").val()==214){
-                set_actual_value('bill', 'state');
-                if(obj=liveaddress.getMappedAddressByID('bill_address_object'))
-                        obj.verify();
-            }
-            if($("select#order_ship_address_attributes_country_id").val()==214){
-                set_actual_value('ship', 'state');
-                if(obj=liveaddress.getMappedAddressByID('ship_address_object'))
-                        obj.verify();
-            }
-            //return false;
-        });
     }
 
     function turn_off_validation()
