@@ -33,34 +33,84 @@
 
     // functions and objects for smarty street jquery plugin
     var  liveaddress={}
+    var data_obj
     function create_liveaddress(){
-        liveaddress=$.LiveAddress({
+        liveaddress=jQuery.LiveAddress({
             key: <%= qualified_address_key %>,
             debug: false,
-            autoVerify: true,
+            waitForStreet: true,
+            autoVerify: false,
+            target: "US",
             addresses: [{
                 id: 'ship_address_object',
-                street: "#order_ship_address_attributes_address1",
-                city: "#order_ship_address_attributes_city",
-                state: "#order_ship_address_attributes_state_name",
-                zipcode: "#order_ship_address_attributes_zipcode",
+                address1: "#order_ship_address_attributes_address1",
+                locality: "#order_ship_address_attributes_city",
+                administrative_area: "#order_ship_address_attributes_state_name",
+                postal_code: "#order_ship_address_attributes_zipcode",
                 country: "#order_ship_address_attributes_country_name"
             },
                 {
                     id: 'bill_address_object',
-                    street: "#order_bill_address_attributes_address1",
-                    city: "#order_bill_address_attributes_city",
-                    state: "#order_bill_address_attributes_state_name",
-                    zipcode: "#order_bill_address_attributes_zipcode",
+                    address1: "#order_bill_address_attributes_address1",
+                    locality: "#order_bill_address_attributes_city",
+                    administrative_area: "#order_bill_address_attributes_state_name",
+                    postal_code: "#order_bill_address_attributes_zipcode",
                     country: "#order_bill_address_attributes_country_name"
                 }]
         });
+        liveaddress.on("AutocompleteUsed", function(event, data, previousHandler)
+        {
+            if (typeof data.containerUi !== "undefined" )
+            {
+            var address_obj=data.containerUi.children()[0].className.split(' ')[1].replace('smarty-addr-','')
+            set_actual_value(address_obj.replace('_address_object',''), 'state');
+            }
+        });
+        liveaddress.on("AddressWasInvalid", function(event, data, previousHandler)
+        {
+            console.log('invalid address');
+            if (!no_valid)
+            previousHandler(event, data);
+        });
+        liveaddress.on("AutocompleteReceived", function(event, data, previousHandler)
+        {
+            data_obj=data;
+            console.log(data);
+            //alert(data);
+            previousHandler(event, data);
+            if (typeof data.containerUi !== "undefined" ) {
+                var address_obj = data.containerUi.children()[0].className.split(' ')[1].replace('smarty-addr-', '')
+                setTimeout(function () {
+                    $('.nwb_exit').remove();
+                    $('.smarty-addr-' + address_obj).append('<div class ="nwb_exit" style="z-index:9999;background:#eee;border:1px solid #ccc;color:red;font-size: 0.8em;cursor: pointer;padding-left: 10px;" href="javascript:shut_down_validation(event, address_obj);">Not in the list? Skip ahead&nbsp;>></div>');
+                }, 500);
+            }
 
+        });
+    }
+    var no_valid=false;
+
+    function shut_down_validation(event, address_obj){
+        no_valid=true;
+        event.preventDefault();
+        console.log('shutting down');
+        $(".smarty-ui a").on("click", function(event){
+            event.preventDefault()
+        });
+        $('#smarty-addr-' + address_obj + ' a').on("click", function(event){
+            event.preventDefault()
+        });
+        $('.smarty-ui').remove();
+        turn_off_validation();
+        liveaddress=null;
+        $('.smarty-popup').remove();
+        console.log('shutting down.. done.')
+        return false;
     }
 
-    function turn_off_validation()
+    function turn_off_validation(address_obj)
     {
-        //liveaddress.deactivate(); //clear all old one
+        liveaddress.deactivate('address_obj'); //clear all old one
         $("#order_ship_address_attributes_address").attr('style','');
         $("#order_ship_address_attributes_city").attr('style','');
         $("#order_ship_address_attributes_zipcode").attr('style','');
@@ -68,12 +118,13 @@
         $("#order_bill_address_attributes_address").attr('style','');
         $("#order_bill_address_attributes_city").attr('style','');
         $("#order_bill_address_attributes_zipcode").attr('style','');
+
     }
 
-    function turn_on_validation()
+    function turn_on_validation(address_obj)
     {
-        turn_off_validation();
-        liveaddress.mapFields();
+        turn_off_validation(address_obj);
+        liveaddress.activate(address_obj);
     }
 
     //pop up the state based on zip code if it is there
@@ -121,7 +172,9 @@
                 set_display_value('bill', 'country');
             }
             if ($("select#order_ship_address_attributes_country_id").val()==214)
-                turn_on_validation();
+                turn_on_validation('ship_address_object');
+            if ($("select#order_bill_address_attributes_country_id").val()==214)
+                turn_on_validation('bill_address_object');
         });
 
         function set_bill_state( init ){
@@ -150,9 +203,15 @@
                 else
                     set_display_value('bill', 'country');
                 if($("#order_ship_address_attributes_country_id").val()==214)
-                    turn_on_validation();
+                    turn_on_validation('ship_address_object');
                 else
-                    turn_off_validation();
+                    turn_off_validation('ship_address_object');
+
+                if($("#order_bill_address_attributes_country_id").val()==214)
+                    turn_on_validation('bill_address_object');
+                else
+                    turn_off_validation('bill_address_object');
+
                 $("#"+$(this).attr('id').replace('country_id','country_name')).change()
             }
             catch(e){}
