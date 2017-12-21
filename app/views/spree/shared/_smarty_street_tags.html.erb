@@ -68,14 +68,14 @@
         });
         liveaddress.on("AddressWasInvalid", function(event, data, previousHandler)
         {
-            console.log('invalid address');
+            //console.log('invalid address');
             if (!no_valid)
             previousHandler(event, data);
         });
         liveaddress.on("AutocompleteReceived", function(event, data, previousHandler)
         {
             data_obj=data;
-            console.log(data);
+            //console.log(data);
             //alert(data);
             previousHandler(event, data);
             if (typeof data.containerUi !== "undefined" ) {
