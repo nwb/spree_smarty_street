@@ -81,15 +81,18 @@
         liveaddress.on("AutocompleteReceived", function(event, data, previousHandler)
         {
             data_obj=data;
-            console.log(data);
+            //console.log(data);
             //alert(data);
             previousHandler(event, data);
             if (typeof data.containerUi !== "undefined" ) {
                 var address_obj = data.containerUi.children()[0].className.split(' ')[1].replace('smarty-addr-', '')
                 setTimeout(function () {
                     $('.nwb_exit').remove();
-                    $('.smarty-addr-' + address_obj).append('<div class ="nwb_exit" style="z-index:9999;background:#eee;border:1px solid #ccc;color:red;font-size: 0.9em;cursor: pointer;padding:2px 0px 2px 10px;" onClick="shut_down_validation(event, \''+ address_obj +'\');">Not in the list? Skip ahead&nbsp;>></div>');
-                }, 500);
+                    $('.smarty-addr-' + address_obj).append('<div class ="nwb_exit" style="z-index:9999;background:#eee;border:1px solid #ccc;color:red;font-size: 0.9em;cursor: pointer;padding:2px 0px 2px 10px;">Not in the list? Skip ahead&nbsp;>></div>');
+                    $('body').on('click', '.nwb_exit', function (event) {
+                        shut_down_validation(event, address_obj);
+                    });
+                    }, 200);
             }
 
         });
@@ -111,8 +114,9 @@
         turn_off_validation(address_obj);
         liveaddress=null;
         $('.smarty-popup').remove();
-        console.log('the city: \'#order_' + address_obj + '_attributes_city');
-        $('#order_' + address_obj + '_attributes_city').focus();
+        //console.log('the city: \'#order_' + address_obj + '_attributes_city');
+        $('#order_' + address_obj.replace('_object','') + '_attributes_city').focus();
+        //$('#order_ship_address_attributes_city').focus()
         return false;
     }
 
