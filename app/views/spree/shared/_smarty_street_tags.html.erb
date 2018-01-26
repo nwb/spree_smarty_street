@@ -181,6 +181,7 @@
             if(this.checked){
                 $("input#order_bill_address_attributes_country_name").val("Use Billing");
             }else{
+                turn_off_validation('bill_address_object');
                 set_display_value('bill', 'country');
             }
             if ($("select#order_ship_address_attributes_country_id").val()==214)
