@@ -178,7 +178,7 @@
         $("select#order_ship_address_attributes_state_id").change(function(){set_display_value('ship', 'state');});
         //$('#order_ship_address_attributes_address1').change(function(){if($(this).val().length>30) turn_off_validation();});
         $('input#order_use_shipping').click(function() {
-            if(this.checked){
+            if(this.prop('checked')){
                 $("input#order_bill_address_attributes_country_name").val("Use Billing");
             }else{
                 turn_off_validation('bill_address_object');
