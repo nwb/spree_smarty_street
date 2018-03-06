@@ -49,15 +49,7 @@
                 administrative_area: "#order_ship_address_attributes_state_name",
                 postal_code: "#order_ship_address_attributes_zipcode",
                 country: "#order_ship_address_attributes_country_name"
-            },
-                {
-                    id: 'bill_address_object',
-                    address1: "#order_bill_address_attributes_address1",
-                    locality: "#order_bill_address_attributes_city",
-                    administrative_area: "#order_bill_address_attributes_state_name",
-                    postal_code: "#order_bill_address_attributes_zipcode",
-                    country: "#order_bill_address_attributes_country_name"
-                }]
+            }]
         });
         liveaddress.on("AutocompleteUsed", function(event, data, previousHandler)
         {
@@ -178,16 +170,16 @@
         $("select#order_ship_address_attributes_state_id").change(function(){set_display_value('ship', 'state');});
         //$('#order_ship_address_attributes_address1').change(function(){if($(this).val().length>30) turn_off_validation();});
         $('input#order_use_shipping').click(function() {
-            if(this.prop('checked')){
+            if($(this).prop('checked')){
                 $("input#order_bill_address_attributes_country_name").val("Use Billing");
             }else{
-                turn_off_validation('bill_address_object');
+                //turn_off_validation('bill_address_object');
                 set_display_value('bill', 'country');
             }
             if ($("select#order_ship_address_attributes_country_id").val()==214)
                 turn_on_validation('ship_address_object');
-            if ($("select#order_bill_address_attributes_country_id").val()==214)
-                turn_on_validation('bill_address_object');
+            //if ($("select#order_bill_address_attributes_country_id").val()==214)
+                //turn_on_validation('bill_address_object');
         });
 
         function set_bill_state( init ){
@@ -220,10 +212,10 @@
                 else
                     turn_off_validation('ship_address_object');
 
-                if($("#order_bill_address_attributes_country_id").val()==214)
-                    turn_on_validation('bill_address_object');
-                else
-                    turn_off_validation('bill_address_object');
+                //if($("#order_bill_address_attributes_country_id").val()==214)
+                //    turn_on_validation('bill_address_object');
+                //else
+                 //   turn_off_validation('bill_address_object');
 
                 $("#"+$(this).attr('id').replace('country_id','country_name')).change()
             }
