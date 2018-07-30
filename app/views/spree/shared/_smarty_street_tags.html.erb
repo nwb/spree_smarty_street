@@ -112,9 +112,12 @@
         return false;
     }
 
-    function turn_off_validation(address_obj)
-    {
+    function turn_off_validation(address_obj) {
+        address_obj = address_obj || "ship_address_object";
+        try {
         liveaddress.deactivate(address_obj); //clear all old one
+        }
+        catch(e){}
         $("#order_ship_address_attributes_address").attr('style','');
         $("#order_ship_address_attributes_city").attr('style','');
         $("#order_ship_address_attributes_zipcode").attr('style','');
@@ -127,6 +130,7 @@
 
     function turn_on_validation(address_obj)
     {
+        address_obj = address_obj || "ship_address_object";
         turn_off_validation(address_obj);
         liveaddress.activate(address_obj);
     }
